@@ -1,77 +1,46 @@
-
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FelipeVerse - Geração de Vídeos</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #111;
-      color: #eee;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem;
-    }
-    h1 {
-      color: #00ffc3;
-    }
-    form {
-      background: #222;
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #00ffc3;
-    }
-    input, textarea, button {
-      margin: 1rem 0;
-      padding: 0.8rem;
-      width: 100%;
-      border: none;
-      border-radius: 5px;
-    }
-    button {
-      background-color: #00ffc3;
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    #result {
-      margin-top: 2rem;
-      color: #0f0;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FelipeVerse</title>
 </head>
 <body>
-  <h1>FelipeVerse - IA Vídeo Maker</h1>
+  <h1>FelipeVerse - Gerador de Vídeo por IA</h1>
+
   <form id="videoForm">
-    <label>URL da imagem:</label>
-    <input type="url" id="imageUrl" placeholder="Cole a URL da imagem" required />
-    <label>Prompt (em qualquer idioma):</label>
-    <textarea id="prompt" rows="4" placeholder="Descreva o que deseja gerar..." required></textarea>
+    <label for="imageUrl">URL da Imagem:</label><br />
+    <input type="text" id="imageUrl" name="imageUrl" required/><br /><br />
+
+    <label for="prompt">Prompt:</label><br />
+    <textarea id="prompt" name="prompt" rows="4" cols="50" required></textarea><br /><br />
+
     <button type="submit">Gerar Vídeo</button>
   </form>
-  <div id="result"></div>
+
+  <div id="resultado" style="margin-top: 30px;"></div>
 
   <script>
-    document.getElementById('videoForm').addEventListener('submit', async function(e) {
+    document.getElementById("videoForm").addEventListener("submit", async function (e) {
       e.preventDefault();
-      const imageUrl = document.getElementById('imageUrl').value;
-      const prompt = document.getElementById('prompt').value;
-      document.getElementById('result').innerText = "Gerando vídeo com IA... Aguarde 🧠✨";
 
-      try {
-        const response = await fetch('/api/generate-video', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ imageUrl, prompt })
-        });
-        const data = await response.json();
-        document.getElementById('result').innerText = data.message;
-      } catch (err) {
-        document.getElementById('result').innerText = "Erro ao gerar vídeo. Tente novamente.";
-      }
+      const imageUrl = document.getElementById("imageUrl").value;
+      const prompt = document.getElementById("prompt").value;
+
+      document.getElementById("resultado").innerHTML = "<p>Gerando vídeo, por favor aguarde...</p>";
+
+      // Simula chamada à API (você pode integrar depois de forma real)
+      setTimeout(() => {
+        document.getElementById("resultado").innerHTML = `
+          <p><strong>Vídeo gerado com sucesso!</strong></p>
+          <p><strong>Prompt:</strong> ${prompt}</p>
+          <p><strong>Imagem:</strong> <img src="${imageUrl}" alt="Imagem enviada" width="300"/></p>
+          <video width="360" controls>
+            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+            Seu navegador não suporta vídeo.
+          </video>
+        `;
+      }, 3000);
     });
   </script>
 </body>
