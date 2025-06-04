@@ -45,19 +45,33 @@
   <div id="response"></div>
 
   <script>
-    async function gerarVideo() {
-      const imageUrl = document.getElementById("imageUrl").value;
-      const prompt = document.getElementById("prompt").value;
+  document.getElementById("videoForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const imageUrl = document.getElementById("imageUrl").value;
+    const prompt = document.getElementById("prompt").value;
 
-      const resposta = await fetch("/generate-video", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ imageUrl, prompt })
-      });
+    document.getElementById("resultado").innerHTML = "<p>Gerando vídeo, por favor aguarde...</p>";
 
-      const dados = await resposta.json();
-      document.getElementById("response").innerText = dados.message || "Erro ao gerar vídeo.";
-    }
-  </script>
-</body>
-</html>
+    const response = await fetch("/api/generate-video", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ imageUrl, prompt }),
+    });
+
+    const data = await response.json();
+
+    setTimeout(() => {
+      document.getElementById("resultado").innerHTML = `
+        <p><strong>Vídeo gerado com sucesso!</strong></p>
+        <p><strong>Prompt:</strong> ${prompt}</p>
+        <p><strong>Imagem:</strong> <img src="${imageUrl}" alt="Imagem enviada" width="200"/></p>
+        <video width="320" controls>
+          <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+          Seu navegador não suporta vídeo.
+        </video>
+      `;
+    }, 3000); // simula o tempo de geração
+  });
+</script>
