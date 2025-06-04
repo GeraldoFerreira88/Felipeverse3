@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FelipeVerse</title>
+  <style>
+    body {
+      background: #121212;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+    h1 { color: #00ffcc; }
+    input, textarea, button {
+      width: 100%;
+      max-width: 400px;
+      margin-top: 1rem;
+      padding: 0.5rem;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: none;
+    }
+    button {
+      background: #00ffcc;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #response {
+      margin-top: 2rem;
+      color: #0f0;
+    }
+  </style>
+</head>
+<body>
+  <h1>FelipeVerse</h1>
+  <input type="text" id="imageUrl" placeholder="Cole o link da imagem" />
+  <textarea id="prompt" rows="4" placeholder="Escreva seu prompt em qualquer idioma"></textarea>
+  <button onclick="gerarVideo()">Gerar Vídeo</button>
+
+  <div id="response"></div>
+
+  <script>
+    async function gerarVideo() {
+      const imageUrl = document.getElementById("imageUrl").value;
+      const prompt = document.getElementById("prompt").value;
+
+      const resposta = await fetch("/generate-video", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imageUrl, prompt })
+      });
+
+      const dados = await resposta.json();
+      document.getElementById("response").innerText = dados.message || "Erro ao gerar vídeo.";
+    }
+  </script>
+</body>
+</html>
