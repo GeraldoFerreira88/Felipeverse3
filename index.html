@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FelipeVerse - Geração de Vídeos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: #eee;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+    h1 {
+      color: #00ffc3;
+    }
+    form {
+      background: #222;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #00ffc3;
+    }
+    input, textarea, button {
+      margin: 1rem 0;
+      padding: 0.8rem;
+      width: 100%;
+      border: none;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #00ffc3;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 2rem;
+      color: #0f0;
+    }
+  </style>
+</head>
+<body>
+  <h1>FelipeVerse - IA Vídeo Maker</h1>
+  <form id="videoForm">
+    <label>URL da imagem:</label>
+    <input type="url" id="imageUrl" placeholder="Cole a URL da imagem" required />
+    <label>Prompt (em qualquer idioma):</label>
+    <textarea id="prompt" rows="4" placeholder="Descreva o que deseja gerar..." required></textarea>
+    <button type="submit">Gerar Vídeo</button>
+  </form>
+  <div id="result"></div>
+
+  <script>
+    document.getElementById('videoForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const imageUrl = document.getElementById('imageUrl').value;
+      const prompt = document.getElementById('prompt').value;
+      document.getElementById('result').innerText = "Gerando vídeo com IA... Aguarde 🧠✨";
+
+      try {
+        const response = await fetch('/api/generate-video', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ imageUrl, prompt })
+        });
+        const data = await response.json();
+        document.getElementById('result').innerText = data.message;
+      } catch (err) {
+        document.getElementById('result').innerText = "Erro ao gerar vídeo. Tente novamente.";
+      }
+    });
+  </script>
+</body>
+</html>
