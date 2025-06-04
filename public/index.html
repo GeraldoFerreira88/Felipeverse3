@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>FelipeVerse AI</title>
+</head>
+<body>
+  <h1>FelipeVerse AI</h1>
+  <form id="videoForm">
+    <label for="imageUrl">URL da imagem:</label>
+    <input type="url" id="imageUrl" name="imageUrl" required>
+    <br>
+    <label for="prompt">Prompt:</label>
+    <input type="text" id="prompt" name="prompt" required>
+    <br>
+    <button type="submit">Gerar vídeo com IA</button>
+  </form>
+  <div id="result"></div>
+
+  <script>
+    document.getElementById('videoForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const imageUrl = document.getElementById('imageUrl').value;
+      const prompt = document.getElementById('prompt').value;
+      const response = await fetch('/api/generate-video', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageUrl, prompt })
+      });
+      const data = await response.json();
+      document.getElementById('result').innerText = data.message;
+    });
+  </script>
+</body>
+</html>
